@@ -3,7 +3,7 @@ import Combine
 
 /// Sink with limitation as per demand
 public extension Publisher where Self.Failure == Never {
-    func sink(demand: Int, receivedValue: @escaping Subscribers.ReceivedValue<Self.Output>) -> AnyCancellable {
+    func sink(_ demand: Int, receivedValue: @escaping Subscribers.ReceivedValue<Self.Output>) -> AnyCancellable {
         let limitedSinkSub = Subscribers.LimitedSink<Self.Output, Never>(demand: demand, receivedValue: receivedValue)
         subscribe(limitedSinkSub)
         return AnyCancellable(limitedSinkSub)
@@ -11,7 +11,7 @@ public extension Publisher where Self.Failure == Never {
 }
 
 public extension Publisher {
-    func sink(demand: Int, receivedCompletion: @escaping Subscribers.ReceivedCompletion<Self.Failure>,
+    func sink(_ demand: Int, receivedCompletion: @escaping Subscribers.ReceivedCompletion<Self.Failure>,
               receivedValue: @escaping Subscribers.ReceivedValue<Self.Output>) -> AnyCancellable {
         let limitedSinkSub = Subscribers.LimitedSink<Self.Output, Self.Failure>(demand: demand, receivedCompletion: receivedCompletion, receivedValue: receivedValue)
         subscribe(limitedSinkSub)

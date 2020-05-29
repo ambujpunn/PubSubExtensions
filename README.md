@@ -6,7 +6,7 @@ Simple playground for extensions of Publisher and Subscribers for iOS Combine
 ```swift
 [1,2,3,4]
     .publisher
-    .sink(demand: 3, receivedCompletion: { completion in
+    .sink(3, receivedCompletion: { completion in
         print("completion: \(completion)")
     }) { print($0) }
     .store(in: &cancellables)
@@ -21,7 +21,7 @@ Simple playground for extensions of Publisher and Subscribers for iOS Combine
 ```swift
 [1,2,3,4]
     .publisher
-    .sink(demand: 4, receivedCompletion: { completion in
+    .sink(4, receivedCompletion: { completion in
         print("completion: \(completion)")
     }) { print($0) }
     .store(in: &cancellables)
