@@ -8,17 +8,17 @@ public extension Subscribers {
     
     class LimitedSink<Input, Failure>: Subscriber, Cancellable where Failure: Error {
         
-        private let demand: Subscribers.Demand
+        private let demand: Int
         private let receivedValue: ReceivedValue<Input>
         private var receivedCompletion: ReceivedCompletion<Failure>?
         private var subscription: Subscription?
         
-        init(demand: Subscribers.Demand, receivedValue: @escaping ReceivedValue<Input>){
+        init(demand: Int, receivedValue: @escaping ReceivedValue<Input>){
             self.demand = demand
             self.receivedValue = receivedValue
         }
         
-        convenience init(demand: Subscribers.Demand, receivedCompletion: @escaping ReceivedCompletion<Failure>, receivedValue: @escaping ReceivedValue<Input>) {
+        convenience init(demand: Int, receivedCompletion: @escaping ReceivedCompletion<Failure>, receivedValue: @escaping ReceivedValue<Input>) {
             self.init(demand: demand, receivedValue: receivedValue)
             self.receivedCompletion = receivedCompletion
         }
@@ -26,7 +26,7 @@ public extension Subscribers {
         public func receive(subscription: Subscription) {
             // Request demand from subscription
             self.subscription = subscription
-            subscription.request(demand)
+            subscription.request(.max(demand))
         }
     
         public func receive(_ input: Input) -> Subscribers.Demand {
